@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>GOFRO 15 ЖИЛИЙН ОЙ — Хүндэтгэлийн Цахим Урилга</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #03110b;
+      --bg-mid: #072217;
+      --bg-card: rgba(6, 27, 19, 0.9);
+      --bg-card-elevated: rgba(10, 39, 27, 0.95);
+      --gold-light: #fff3c4;
+      --gold: #dfb258;
+      --gold-deep: #9c7021;
+      --text-main: #f5f8f6;
+      --text-muted: #c4d4cc;
+      --border-gold: rgba(223, 178, 88, 0.55);
+      --border-gold-strong: rgba(255, 228, 152, 0.92);
+      --shadow-gold: 0 14px 38px rgba(0, 0, 0, 0.68), 0 0 26px rgba(223, 178, 88, 0.16);
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at 50% 10%, rgba(223, 178, 88, 0.18), transparent 46%),
+        radial-gradient(circle at 15% 80%, rgba(16, 88, 58, 0.48), transparent 55%),
+        radial-gradient(circle at 85% 75%, rgba(12, 66, 44, 0.48), transparent 55%),
+        linear-gradient(165deg, var(--bg-dark) 0%, var(--bg-mid) 52%, #020c08 100%);
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ==================== 1. НЭЭЛТИЙН ВИДЕО ХЭСЭГ ==================== */
+    #intro-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #020906;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      transition: opacity 0.7s ease, visibility 0.7s ease;
+    }
+
+    #intro-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .intro-frame {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      aspect-ratio: 9 / 16;
+      max-height: 78vh;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 42px rgba(223, 178, 88, 0.34), 0 20px 50px rgba(0, 0, 0, 0.85);
+      background: #030f0a;
+    }
+
+    #intro-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .intro-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(4, 19, 13, 0.82);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-light);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      backdrop-filter: blur(6px);
+    }
+
+    .intro-actions {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .intro-skip-btn {
+      background: rgba(8, 36, 25, 0.9);
+      color: var(--gold-light);
+      border: 1px solid var(--border-gold);
+      border-radius: 999px;
+      padding: 10px 20px;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .intro-skip-btn:hover,
+    .intro-skip-btn:focus-visible {
+      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      color: #061810;
+    }
+
+    /* ==================== 2. ҮНДСЭН УРИЛГЫН КОНТЕЙНЕР ==================== */
+    .page-wrapper {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 20px 14px 56px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .page-wrapper.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .gold-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-gold);
+      border-radius: var(--radius-lg);
+      padding: 24px 18px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-gold);
+      backdrop-filter: blur(10px);
+    }
+
+    .gold-card::before {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border: 1px solid rgba(223, 178, 88, 0.22);
+      border-radius: calc(var(--radius-lg) - 5px);
+      pointer-events: none;
+    }
+
+    .top-audio-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      background: rgba(5, 22, 15, 0.92);
+      border: 1px solid var(--border-gold);
+    }
+
+    .audio-status {
+      font-size: 0.9rem;
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 24px;
+    }
+
+    .audio-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      width: 100%;
+    }
+
+    @media (min-width: 540px) {
+      .audio-controls {
+        width: auto;
+      }
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 55%, var(--gold-deep) 100%);
+      color: #071b12;
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 11px 16px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+      box-shadow: 0 4px 16px rgba(223, 178, 88, 0.28);
+      text-decoration: none;
+    }
+
+    .btn-gold:hover,
+    .btn-gold:focus-visible {
+      filter: brightness(1.06);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(223, 178, 88, 0.42);
+    }
+
+    .btn-outline-gold {
+      background: rgba(11, 41, 29, 0.78);
+      color: var(--gold-light);
+      font-weight: 600;
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 0.92rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-outline-gold:hover,
+    .btn-outline-gold:focus-visible {
+      background: rgba(223, 178, 88, 0.18);
+      border-color: var(--border-gold-strong);
+    }
+
+    .speak-btn {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border-gold);
+      background: rgba(223, 178, 88, 0.14);
+      color: var(--gold-light);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.22s ease;
+    }
+
+    .speak-btn:hover,
+    .speak-btn:focus-visible {
+      background: rgba(223, 178, 88, 0.28);
+      border-color: var(--gold-light);
+      transform: scale(1.05);
+    }
+
+    .speak-btn.speaking {
+      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      color: #05160f;
+      box-shadow: 0 0 16px rgba(255, 225, 145, 0.65);
+    }
+
+    .readable-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .readable-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .hero-header {
+      text-align: center;
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+
+    .brand-mark {
+      display: inline-block;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(2.1rem, 7vw, 3.1rem);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      background: linear-gradient(180deg, #fff6cf 0%, #e4b85e 52%, #a57724 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 3px 10px rgba(223, 178, 88, 0.28));
+    }
+
+    .anniversary-title {
+      margin-top: 4px;
+      font-size: clamp(1.35rem, 5vw, 2rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--gold-light);
+    }
+
+    .values-line {
+      margin-top: 10px;
+      font-size: clamp(0.95rem, 3.4vw, 1.12rem);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      padding: 8px 12px;
+      border-top: 1px solid rgba(223, 178, 88, 0.3);
+      border-bottom: 1px solid rgba(223, 178, 88, 0.3);
+      display: inline-block;
+    }
+
+    .invitation-badge {
+      margin-top: 16px;
+      font-size: clamp(1rem, 3.8vw, 1.22rem);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text-main);
+      text-transform: uppercase;
+    }
+
+    .invitation-message {
+      margin-top: 14px;
+      font-size: clamp(1.02rem, 3.8vw, 1.18rem);
+      line-height: 1.75;
+      color: var(--text-main);
+      text-align: left;
+    }
+
+    .section-heading {
+      font-size: clamp(1.12rem, 4.2vw, 1.35rem);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--gold-light);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 560px) {
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .info-item {
+      background: rgba(4, 19, 13, 0.75);
+      border: 1px solid rgba(223, 178, 88, 0.35);
+      border-radius: var(--radius-md);
+      padding: 14px;
+    }
+
+    .info-label {
+      font-size: 0.85rem;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    .info-value {
+      font-size: 1.02rem;
+      color: var(--text-main);
+      font-weight: 500;
+      word-break: break-word;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.96rem;
+      font-weight: 600;
+      color: var(--gold-light);
+      margin-bottom: 7px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 13px 14px;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--text-main);
+      background: rgba(3, 14, 9, 0.85);
+      border: 1px solid rgba(223, 178, 88, 0.45);
+      border-radius: var(--radius-sm);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--gold-light);
+      box-shadow: 0 0 0 3px rgba(223, 178, 88, 0.22);
+    }
+
+    textarea.form-control {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    .radio-group {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    @media (min-width: 540px) {
+      .radio-group {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .radio-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(223, 178, 88, 0.4);
+      background: rgba(3, 14, 9, 0.78);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.96rem;
+    }
+
+    .radio-card input[type="radio"] {
+      accent-color: var(--gold);
+      width: 19px;
+      height: 19px;
+      flex-shrink: 0;
+    }
+
+    .radio-card:has(input:checked) {
+      border-color: var(--gold-light);
+      background: rgba(223, 178, 88, 0.16);
+      box-shadow: 0 0 14px rgba(223, 178, 88, 0.18);
+    }
+
+    .submit-main-btn {
+      width: 100%;
+      padding: 16px 20px;
+      font-size: 1.08rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    .response-output-box {
+      display: none;
+      margin-top: 22px;
+      padding: 18px 16px;
+      border-radius: var(--radius-md);
+      background: var(--bg-card-elevated);
+      border: 1.5px solid var(--gold);
+      box-shadow: var(--shadow-gold);
+    }
+
+    .response-output-box.active {
+      display: block;
+      animation: fadeSlideIn 0.35s ease;
+    }
+
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .formatted-preview {
+      white-space: pre-line;
+      background: rgba(2, 11, 7, 0.92);
+      border: 1px solid rgba(223, 178, 88, 0.35);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      font-size: 0.96rem;
+      line-height: 1.6;
+      color: var(--text-main);
+      margin: 12px 0 16px;
+    }
+
+    .share-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    @media (min-width: 520px) {
+      .share-actions {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .share-note {
+      margin-top: 12px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .toast-msg {
+      margin-top: 10px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--gold-light);
+      min-height: 22px;
+    }
+
+    .error-text {
+      color: #ff9e8a;
+      font-size: 0.92rem;
+      margin-top: 6px;
+      display: none;
+    }
+
+    .error-text.visible {
+      display: block;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      padding-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== 1. НЭЭЛТИЙН ВИДЕО ==================== -->
+  <div id="intro-overlay" role="dialog" aria-label="GOFRO 15 жилийн ойн нээлтийн видео">
+    <div class="intro-frame">
+      <span class="intro-badge">GOFRO · 15 ЖИЛИЙН ОЙ</span>
+      <video
+        id="intro-video"
+        src="video_1.mp4"
+        playsinline
+        webkit-playsinline
+        muted
+        autoplay
+        preload="auto"
+      ></video>
+    </div>
+    <div class="intro-actions">
+      <button type="button" id="unmute-intro-btn" class="intro-skip-btn">
+        🔊 Дуутай эхлүүлэх
+      </button>
+      <button type="button" id="skip-intro-btn" class="intro-skip-btn">
+        Урилга руу шууд орох →
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== 2. ҮНДСЭН ЦАХИМ УРИЛГА ==================== -->
+  <main id="invitation-main" class="page-wrapper" aria-live="polite">
+
+    <div class="top-audio-bar">
+      <div class="audio-status" id="audio-status">
+        <span>🔊 Монгол хэлний дуут уншлага бэлэн</span>
+      </div>
+      <div class="audio-controls">
+        <button type="button" id="listen-all-btn" class="btn-gold">
+          <span>🎧 БҮХ УРИЛГЫГ СОНСОХ</span>
+        </button>
+        <button type="button" id="stop-audio-btn" class="btn-outline-gold">
+          <span>⏹ Зогсоох</span>
+        </button>
+      </div>
+    </div>
+
+    <section class="gold-card hero-header">
+      <div class="readable-row">
+        <div class="readable-content" id="text-brand-header">
+          <div class="brand-mark">GOFRO</div>
+          <h1 class="anniversary-title">GOFRO 15 ЖИЛИЙН ОЙ</h1>
+          <div class="values-line">ЧАНАР · ҮНЭ ЦЭНЭ · ХЭРЭГЛЭЭ</div>
+          <h2 class="invitation-badge">ХҮНДЭТГЭЛИЙН ЦАХИМ УРИЛГА</h2>
+        </div>
+        <button
+          type="button"
+          class="speak-btn"
+          data-speak-target="text-brand-header"
+          aria-label="Гарчиг болон уриаг монгол хэлээр сонсох"
+          title="Сонсох"
+        >
+          🔊
+        </button>
+      </div>
+
+      <hr style="border: none; border-top: 1px solid rgba(223, 178, 88, 0.25); margin: 18px 0;" />
+
+      <div class="readable-row">
+        <div class="readable-content" id="text-invitation-body">
+          <p class="invitation-message">
+            ГОФРО компанийн хөгжил дэвшлийн нэгэн эрхэм тулгуур болсон эрхэм хүндэт Таныг бидэнтэй хамтдаа хөгжил дэвшилд тэмүүлсэн 15 жилийн ойн баярт хүндэтгэн урьж байна.
+          </p>
+        </div>
+        <button
+          type="button"
+          class="speak-btn"
+          data-speak-target="text-invitation-body"
+          aria-label="Урилгын үндсэн текстийг сонсох"
+          title="Сонсох"
+        >
+          🔊
+        </button>
+      </div>
+    </section>
+
+    <section class="gold-card" id="event-info-section">
+      <div class="readable-row" style="margin-bottom: 12px;">
+        <h2 class="section-heading" id="text-event-heading" style="margin-bottom: 0;">
+          <span>✦</span> БАЯРЫН МЭДЭЭЛЭЛ
+        </h2>
+        <button
+          type="button"
+          class="speak-btn"
+          data-speak-target="event-info-speakable"
+          aria-label="Баярын мэдээллийг сонсох"
+          title="Сонсох"
+        >
+          🔊
+        </button>
+      </div>
+
+      <div id="event-info-speakable" class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Баярын өдөр</div>
+          <div class="info-value" id="event-date-display">Тодорхойлогдоно</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Эхлэх цаг</div>
+          <div class="info-value" id="event-time-display">Тодорхойлогдоно</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Баяр болох газрын нэр</div>
+          <div class="info-value" id="event-venue-display">GOFRO 15 жилийн ойн хүндэтгэлийн ёслолын танхим</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Хаяг, байршил</div>
+          <div class="info-value" id="event-location-display">Улаанбаатар хот</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gold-card" id="rsvp-section">
+      <div class="readable-row" style="margin-bottom: 14px;">
+        <h2 class="section-heading" id="text-rsvp-title" style="margin-bottom: 0;">
+          ТА МАНАЙ БАЯРТ ХҮРЭЛЦЭН ИРЭХ ҮҮ?
+        </h2>
+        <button
+          type="button"
+          class="speak-btn"
+          data-speak-target="text-rsvp-title"
+          aria-label="Хариултын гарчгийг сонсох"
+          title="Сонсох"
+        >
+          🔊
+        </button>
+      </div>
+
+      <form id="rsvp-form" novalidate autocomplete="off">
+        <div class="form-group">
+          <label class="form-label" for="guest-name">Овог, нэр *</label>
+          <input
+            type="text"
+            id="guest-name"
+            name="guestName"
+            class="form-control"
+            placeholder="Овог, нэрээ бичнэ үү"
+            required
+          />
+          <div class="error-text" id="name-error">Овог, нэрээ оруулна уу.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="guest-org">Байгууллагын нэр</label>
+          <input
+            type="text"
+            id="guest-org"
+            name="guestOrg"
+            class="form-control"
+            placeholder="Байгууллагын нэр"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="guest-phone">Утасны дугаар (заавал биш)</label>
+          <input
+            type="tel"
+            id="guest-phone"
+            name="guestPhone"
+            class="form-control"
+            placeholder="Утасны дугаар"
+          />
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Хүрэлцэн ирэх эсэх *</span>
+          <div class="radio-group">
+            <label class="radio-card">
+              <input type="radio" name="attendance" value="Тийм, баярт хүрэлцэн ирнэ." checked />
+              <span>Тийм, баярт хүрэлцэн ирнэ.</span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="attendance" value="Харамсалтай нь ирэх боломжгүй." />
+              <span>Харамсалтай нь ирэх боломжгүй.</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="guest-count">Хамт ирэх хүний тоо</label>
+          <input
+            type="number"
+            id="guest-count"
+            name="guestCount"
+            class="form-control"
+            min="0"
+            max="20"
+            value="1"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="guest-note">Нэмэлт санал, хүсэлт</label>
+          <textarea
+            id="guest-note"
+            name="guestNote"
+            class="form-control"
+            placeholder="Нэмэлт санал, хүсэлт"
+          ></textarea>
+        </div>
+
+        <button type="submit" id="submit-rsvp-btn" class="btn-gold submit-main-btn">
+          ХАРИУЛТАА ИЛГЭЭХ
+        </button>
+      </form>
+
+      <div id="response-output-box" class="response-output-box" aria-live="polite">
+        <h3 style="color: var(--gold-light); font-size: 1.05rem;">
+          Бэлтгэсэн хариултын мэдээлэл:
+        </h3>
+        <div id="formatted-response-text" class="formatted-preview"></div>
+
+        <div class="share-actions">
+          <button type="button" id="copy-response-btn" class="btn-gold">
+            📋 ХАРИУЛТАА ХУУЛАХ
+          </button>
+          <a
+            id="messenger-share-link"
+            href="https://www.messenger.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-outline-gold"
+          >
+            💬 MESSENGER-ЭЭР ИЛГЭЭХ
+          </a>
+        </div>
+
+        <div id="toast-msg" class="toast-msg"></div>
+
+        <p class="share-note">
+          Messenger боломжгүй үед «ХАРИУЛТАА ХУУЛАХ» товчийг дарж хариултыг хуулан өөрийн хүссэн сувгаар илгээнэ үү.
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      © GOFRO · 15 ЖИЛИЙН ОЙ · ЧАНАР · ҮНЭ ЦЭНЭ · ХЭРЭГЛЭЭ
+    </footer>
+  </main>
+
+  <script>
+    const EVENT_CONFIG = {
+      date: "Тодорхойлогдоно",
+      time: "Тодорхойлогдоно",
+      venue: "GOFRO 15 жилийн ойн хүндэтгэлийн ёслолын танхим",
+      location: "Улаанбаатар хот",
+      messengerUsername: ""
+    };
+
+    function applyEventConfig() {
+      const params = new URLSearchParams(window.location.search);
+      document.getElementById("event-date-display").textContent = params.get("date") || EVENT_CONFIG.date;
+      document.getElementById("event-time-display").textContent = params.get("time") || EVENT_CONFIG.time;
+      document.getElementById("event-venue-display").textContent = params.get("venue") || EVENT_CONFIG.venue;
+      document.getElementById("event-location-display").textContent = params.get("location") || EVENT_CONFIG.location;
+    }
+
+    const introOverlay = document.getElementById("intro-overlay");
+    const introVideo = document.getElementById("intro-video");
+    const unmuteIntroBtn = document.getElementById("unmute-intro-btn");
+    const skipIntroBtn = document.getElementById("skip-intro-btn");
+    const invitationMain = document.getElementById("invitation-main");
+
+    let introFinished = false;
+    let fallbackTimer = null;
+
+    function revealInvitation() {
+      if (introFinished) return;
+      introFinished = true;
+      if (fallbackTimer) clearTimeout(fallbackTimer);
+      try {
+        introVideo.pause();
+      } catch (_) {}
+      introOverlay.classList.add("hidden");
+      invitationMain.classList.add("visible");
+    }
+
+    unmuteIntroBtn.addEventListener("click", () => {
+      if (fallbackTimer) clearTimeout(fallbackTimer);
+      introVideo.muted = false;
+      introVideo.currentTime = 0;
+      const p = introVideo.play();
+      if (p && typeof p.catch === "function") {
+        p.catch(() => {});
+      }
+      fallbackTimer = setTimeout(revealInvitation, 12000);
+    });
+
+    function startIntroSequence() {
+      fallbackTimer = setTimeout(() => {
+        revealInvitation();
+      }, 9500);
+
+      introVideo.addEventListener("ended", revealInvitation, { once: true });
+      introVideo.addEventListener("error", () => {
+        setTimeout(revealInvitation, 600);
+      }, { once: true });
+
+      const playPromise = introVideo.play();
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => {
+          setTimeout(revealInvitation, 1500);
+        });
+      }
+    }
+
+    skipIntroBtn.addEventListener("click", revealInvitation);
+
+    const audioStatusEl = document.getElementById("audio-status");
+    const listenAllBtn = document.getElementById("listen-all-btn");
+    const stopAudioBtn = document.getElementById("stop-audio-btn");
+
+    const speechSupported = "speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined";
+    let availableVoices = [];
+    let currentUtterance = null;
+    let activeSpeakBtn = null;
+    let queueList = [];
+    let isPlayingQueue = false;
+
+    function loadVoices() {
+      if (!speechSupported) return;
+      availableVoices = window.speechSynthesis.getVoices() || [];
+    }
+
+    if (speechSupported) {
+      loadVoices();
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+
+    function pickMongolianVoice() {
+      if (!availableVoices || !availableVoices.length) {
+        loadVoices();
+      }
+      if (!availableVoices || !availableVoices.length) return null;
+
+      const mnExact = availableVoices.find(v => v.lang && v.lang.toLowerCase() === "mn-mn");
+      if (mnExact) return mnExact;
+
+      const mnPrefix = availableVoices.find(v => v.lang && v.lang.toLowerCase().startsWith("mn"));
+      if (mnPrefix) return mnPrefix;
+
+      return availableVoices.find(v => /mongol|mn/i.test(v.name || "")) || null;
+    }
+
+    function setAudioStatus(msg) {
+      audioStatusEl.innerHTML = `<span>${msg}</span>`;
+    }
+
+    function clearActiveButtons() {
+      document.querySelectorAll(".speak-btn.speaking").forEach(btn => {
+        btn.classList.remove("speaking");
+      });
+      activeSpeakBtn = null;
+    }
+
+    function stopSpeech() {
+      isPlayingQueue = false;
+      queueList = [];
+      clearActiveButtons();
+      if (speechSupported) {
+        try {
+          window.speechSynthesis.cancel();
+        } catch (_) {}
+      }
+      currentUtterance = null;
+      setAudioStatus("🔊 Монгол хэлний дуут уншлага зогссон");
+    }
+
+    function extractTextFromElement(el) {
+      if (!el) return "";
+      const clone = el.cloneNode(true);
+      clone.querySelectorAll("button, .speak-btn").forEach(n => n.remove());
+      return clone.textContent.replace(/\s+/g, " ").trim();
+    }
+
+    function speakText(text, triggerBtn = null, onComplete = null) {
+      const cleanText = (text || "").trim();
+      if (!cleanText) {
+        if (onComplete) onComplete();
+        return;
+      }
+
+      if (!speechSupported) {
+        setAudioStatus("⚠️ Таны төхөөрөмж дуут уншлагыг дэмжихгүй байна.");
+        if (onComplete) onComplete();
+        return;
+      }
+
+      try {
+        window.speechSynthesis.cancel();
+      } catch (_) {}
+
+      clearActiveButtons();
+
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      const mnVoice = pickMongolianVoice();
+
+      if (mnVoice) {
+        utterance.voice = mnVoice;
+        utterance.lang = mnVoice.lang || "mn-MN";
+      } else {
+        utterance.lang = "mn-MN";
+      }
+
+      utterance.rate = 0.92;
+      utterance.pitch = 0.96;
+      utterance.volume = 1.0;
+
+      if (triggerBtn) {
+        triggerBtn.classList.add("speaking");
+        activeSpeakBtn = triggerBtn;
+      }
+
+      const voiceLabel = mnVoice
+        ? ` (${mnVoice.lang})`
+        : " (Төхөөрөмжид mn-MN дуу хоолой суугаагүй байж болзошгүй)";
+      setAudioStatus(`🔊 Уншиж байна${voiceLabel}...`);
+
+      utterance.onend = () => {
+        clearActiveButtons();
+        currentUtterance = null;
+        if (!isPlayingQueue) {
+          setAudioStatus("✓ Уншлага дууслаа");
+        }
+        if (onComplete) onComplete();
+      };
+
+      utterance.onerror = (event) => {
+        clearActiveButtons();
+        currentUtterance = null;
+        if (event && event.error === "interrupted") return;
+        setAudioStatus("⚠️ Дуут уншлагыг дахин дарж сонсоно уу.");
+        if (onComplete) onComplete();
+      };
+
+      currentUtterance = utterance;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function playQueue(items) {
+      stopSpeech();
+      queueList = items.filter(item => item && item.text && item.text.trim().length > 0);
+      if (!queueList.length) return;
+      isPlayingQueue = true;
+
+      function nextStep(index) {
+        if (!isPlayingQueue || index >= queueList.length) {
+          isPlayingQueue = false;
+          clearActiveButtons();
+          setAudioStatus("✓ Бүх урилгын уншлага дууслаа");
+          return;
+        }
+        const current = queueList[index];
+        speakText(current.text, current.btn, () => {
+          if (isPlayingQueue) {
+            nextStep(index + 1);
+          }
+        });
+      }
+
+      nextStep(0);
+    }
+
+    document.querySelectorAll(".speak-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.getAttribute("data-speak-target");
+        const targetEl = document.getElementById(targetId);
+        const text = extractTextFromElement(targetEl);
+
+        if (activeSpeakBtn === btn && speechSupported && window.speechSynthesis.speaking) {
+          stopSpeech();
+          return;
+        }
+        isPlayingQueue = false;
+        speakText(text, btn);
+      });
+    });
+
+    listenAllBtn.addEventListener("click", () => {
+      const headerBtn = document.querySelector('[data-speak-target="text-brand-header"]');
+      const bodyBtn = document.querySelector('[data-speak-target="text-invitation-body"]');
+      const eventBtn = document.querySelector('[data-speak-target="event-info-speakable"]');
+      const rsvpBtn = document.querySelector('[data-speak-target="text-rsvp-title"]');
+
+      const dateText = document.getElementById("event-date-display").textContent.trim();
+      const timeText = document.getElementById("event-time-display").textContent.trim();
+      const venueText = document.getElementById("event-venue-display").textContent.trim();
+      const locationText = document.getElementById("event-location-display").textContent.trim();
+
+      const eventSpoken = `Баярын мэдээлэл. Баярын өдөр: ${dateText}. Эхлэх цаг: ${timeText}. Баяр болох газрын нэр: ${venueText}. Хаяг, байршил: ${locationText}.`;
+
+      playQueue([
+        { text: extractTextFromElement(document.getElementById("text-brand-header")), btn: headerBtn },
+        { text: extractTextFromElement(document.getElementById("text-invitation-body")), btn: bodyBtn },
+        { text: eventSpoken, btn: eventBtn },
+        { text: extractTextFromElement(document.getElementById("text-rsvp-title")), btn: rsvpBtn }
+      ]);
+    });
+
+    stopAudioBtn.addEventListener("click", stopSpeech);
+
+    const rsvpForm = document.getElementById("rsvp-form");
+    const guestNameInput = document.getElementById("guest-name");
+    const guestOrgInput = document.getElementById("guest-org");
+    const guestPhoneInput = document.getElementById("guest-phone");
+    const guestCountInput = document.getElementById("guest-count");
+    const guestNoteInput = document.getElementById("guest-note");
+    const nameErrorEl = document.getElementById("name-error");
+
+    const outputBox = document.getElementById("response-output-box");
+    const formattedPreviewEl = document.getElementById("formatted-response-text");
+    const copyBtn = document.getElementById("copy-response-btn");
+    const messengerLink = document.getElementById("messenger-share-link");
+    const toastMsgEl = document.getElementById("toast-msg");
+
+    let latestFormattedText = "";
+
+    function buildFormattedResponse() {
+      const fullName = guestNameInput.value.trim();
+      const org = guestOrgInput.value.trim();
+      const phone = guestPhoneInput.value.trim();
+      const attendanceRadio = document.querySelector('input[name="attendance"]:checked');
+      const attendance = attendanceRadio ? attendanceRadio.value : "Тийм, баярт хүрэлцэн ирнэ.";
+      const rawCount = Number(guestCountInput.value);
+      const count = Number.isFinite(rawCount) ? Math.max(0, Math.min(20, Math.floor(rawCount))) : 0;
+      guestCountInput.value = String(count);
+      const note = guestNoteInput.value.trim();
+
+      return [
+        "GOFRO 15 ЖИЛИЙН ОЙ — УРИЛГЫН ХАРИУ",
+        "----------------------------------------",
+        `Овог, нэр: ${fullName}`,
+        `Байгууллагын нэр: ${org || "Мэдээлээгүй"}`,
+        `Утасны дугаар: ${phone || "Оруулаагүй"}`,
+        `Хүрэлцэн ирэх эсэх: ${attendance}`,
+        `Хамт ирэх хүний тоо: ${count}`,
+        `Нэмэлт санал, хүсэлт: ${note || "Байхгүй"}`
+      ].join("\n");
+    }
+
+    function updateMessengerUrl(text) {
+      const encoded = encodeURIComponent(text);
+      if (EVENT_CONFIG.messengerUsername && EVENT_CONFIG.messengerUsername.trim() !== "") {
+        const user = encodeURIComponent(EVENT_CONFIG.messengerUsername.trim());
+        messengerLink.href = `https://m.me/${user}?text=${encoded}`;
+      } else {
+        messengerLink.href = "https://www.messenger.com/";
+      }
+    }
+
+    rsvpForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      toastMsgEl.textContent = "";
+
+      const fullName = guestNameInput.value.trim();
+      if (!fullName) {
+        nameErrorEl.classList.add("visible");
+        guestNameInput.focus();
+        return;
+      }
+      nameErrorEl.classList.remove("visible");
+
+      latestFormattedText = buildFormattedResponse();
+      formattedPreviewEl.textContent = latestFormattedText;
+      updateMessengerUrl(latestFormattedText);
+
+      outputBox.classList.add("active");
+      outputBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+
+    guestNameInput.addEventListener("input", () => {
+      if (guestNameInput.value.trim()) {
+        nameErrorEl.classList.remove("visible");
+      }
+    });
+
+    async function copyTextToClipboard(text) {
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch (_) {}
+      }
+      const helper = document.createElement("textarea");
+      helper.value = text;
+      helper.setAttribute("readonly", "");
+      helper.style.position = "fixed";
+      helper.style.opacity = "0";
+      document.body.appendChild(helper);
+      helper.select();
+      let ok = false;
+      try {
+        ok = document.execCommand("copy");
+      } catch (_) {
+        ok = false;
+      }
+      document.body.removeChild(helper);
+      return ok;
+    }
+
+    copyBtn.addEventListener("click", async () => {
+      const textToCopy = latestFormattedText || buildFormattedResponse();
+      const copied = await copyTextToClipboard(textToCopy);
+      toastMsgEl.textContent = copied
+        ? "✓ Хариултын текст хуулагдлаа."
+        : "Дээрх текстийг гараар сонгож хуулна уу.";
+    });
+
+    messengerLink.addEventListener("click", async () => {
+      const textToCopy = latestFormattedText || buildFormattedResponse();
+      await copyTextToClipboard(textToCopy);
+      toastMsgEl.textContent = "✓ Хариулт хуулагдлаа. Messenger нээгдмэгц нааж илгээнэ үү.";
+    });
+
+    applyEventConfig();
+    startIntroSequence();
+  </script>
+</body>
+</html>
